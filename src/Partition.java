@@ -7,7 +7,7 @@ public class Partition {
         Scanner scan = new Scanner(System.in);
 
         int sets_num = scan.nextInt();  // n
-        int main_set_end =scan.nextInt();  // x
+        int main_set_end =scan.nextInt();  // x = 5
         start(sets_num, main_set_end);
 
 
@@ -17,8 +17,8 @@ public class Partition {
 
         Scanner scan2 = new Scanner(System.in) ;
 
-        Segment_tree s = new Segment_tree(main_set_ending);
-        int[][] arr = new int[2][sets_num];
+
+        int[][] arr = new int[sets_num][2];
 
         //give the sets
         for (int i = 0; i < sets_num; i++) {
@@ -29,12 +29,24 @@ public class Partition {
         //sort the sets
         sort_by_Column(arr, 1);
 
-        // update sets and use algorithm 1111
+        // make a tree and initialize it
 
+        Segment_tree segment_tree = new Segment_tree(main_set_ending);
+
+        int[] temp = new int[main_set_ending+12];
+
+        segment_tree.construct_tree( temp , main_set_ending  );
+
+        // update sets and use algorithm
+
+        segment_tree.update_start(main_set_ending + 1 ,main_set_ending ,main_set_ending ,1 );
 
         for (int i = 0; i < sets_num; i++) {
-
+                int amount = segment_tree.getSum(main_set_ending , arr[i][0] , arr[i][1]);
+                segment_tree.update_start(main_set_ending ,arr[i][0] , arr[i][0] , amount);
         }
+
+        System.out.println( segment_tree.getSum( main_set_ending , 0, 0 ));
 
     }
 
@@ -77,6 +89,5 @@ public class Partition {
 //        tree.update_start(n, 1, 5, 10);
 //
 //        System.out.println("Updated sum of values in given range = " +
-//                tree.getSum(n, 1, 3));
+//     1111111111111111111111111111           tree.getSum(n, 1, 3));
 //    }
-11111111111111111111111111111111

@@ -1,16 +1,16 @@
 public class Segment_tree
 {
-    private int MAX_tree_size ;	 // Max tree size
-    int tree[] ; // To store segment tree
-    int lazy[] ; // To store pending updates
+    int[] tree; // To store segment tree
+    int[] lazy; // To store pending updates
 
     public Segment_tree(int max_array_size) {
-        MAX_tree_size = (int) Math.pow(2, max_array_size) ;
+        // Max tree size
+        int MAX_tree_size = (int) Math.pow(2, max_array_size);
         tree = new int[MAX_tree_size];
-        tree = new int[MAX_tree_size];
+        lazy = new int[MAX_tree_size];
     }
 
-    void update(int segment_index, int segment_start, int segment_end, int update_start,
+    private void update(int segment_index, int segment_start, int segment_end, int update_start,
                          int update_end, int diff)
     {
         if (lazy[segment_index] != 0)
@@ -48,11 +48,11 @@ public class Segment_tree
         tree[segment_index] = tree[segment_index * 2 + 1] + tree[segment_index * 2 + 2];
     }
 
-    void update_start(int n, int update_start, int update_end, int diff) {
-        update(0, 0, n - 1, update_start, update_end, diff);
+    public void update_start(int main_end , int update_start, int update_end, int diff) {
+        update(0, 0, main_end, update_start, update_end, diff);
     }
 
-    int getSumUtil(int segment_start, int segment_end, int query_start, int query_end, int segment_index)
+    private int getSumUtil(int segment_start, int segment_end, int query_start, int query_end, int segment_index)
     {
         if (lazy[segment_index] != 0)
         {
@@ -78,18 +78,18 @@ public class Segment_tree
                 getSumUtil(mid + 1, segment_end, query_start, query_end, 2 * segment_index + 2);
     }
 
-    int getSum(int n, int query_start, int query_end)
+    public int getSum(int main_end , int query_start, int query_end)
     {
-        if (query_start < 0 || query_end > n - 1 || query_start > query_end)
+        if (query_start < 0 || query_end > main_end || query_start > query_end)
         {
             System.out.println("Invalid Input");
             return -1;
         }
 
-        return getSumUtil(0, n - 1, query_start, query_end, 0);
+        return getSumUtil(0, main_end, query_start, query_end, 0);
     }
 
-    void construct(int arr[], int segment_start, int segment_end, int segment_index)
+    private void construct(int arr[], int segment_start, int segment_end, int segment_index)
     {
         if (segment_start > segment_end)
             return;
@@ -107,9 +107,9 @@ public class Segment_tree
         tree[segment_index] = tree[segment_index * 2 + 1] + tree[segment_index * 2 + 2];
     }
 
-    void construct_tree(int arr[], int n)
+    public void construct_tree(int arr[], int segment_end)
     {
-        construct(arr, 0, n - 1, 0);
+        construct(arr, 0, segment_end , 0);
     }
 
 
