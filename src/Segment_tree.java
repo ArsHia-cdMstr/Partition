@@ -52,7 +52,7 @@ public class Segment_tree
         update(0, 0, n - 1, update_start, update_end, diff);
     }
 
-    int getSumUtil(int segment_start, int segment_end, int qs, int qe, int segment_index)
+    int getSumUtil(int segment_start, int segment_end, int query_start, int query_end, int segment_index)
     {
         if (lazy[segment_index] != 0)
         {
@@ -67,29 +67,29 @@ public class Segment_tree
             lazy[segment_index] = 0;
         }
 
-        if (segment_start > segment_end || segment_start > qe || segment_end < qs)
+        if (segment_start > segment_end || segment_start > query_end || segment_end < query_start)
             return 0;
 
-        if (segment_start >= qs && segment_end <= qe)
+        if (segment_start >= query_start && segment_end <= query_end)
             return tree[segment_index];
 
         int mid = (segment_start + segment_end) / 2;
-        return getSumUtil(segment_start, mid, qs, qe, 2 * segment_index + 1) +
-                getSumUtil(mid + 1, segment_end, qs, qe, 2 * segment_index + 2);
+        return getSumUtil(segment_start, mid, query_start, query_end, 2 * segment_index + 1) +
+                getSumUtil(mid + 1, segment_end, query_start, query_end, 2 * segment_index + 2);
     }
 
-    int getSum(int n, int qs, int qe)
+    int getSum(int n, int query_start, int query_end)
     {
-        if (qs < 0 || qe > n - 1 || qs > qe)
+        if (query_start < 0 || query_end > n - 1 || query_start > query_end)
         {
             System.out.println("Invalid Input");
             return -1;
         }
 
-        return getSumUtil(0, n - 1, qs, qe, 0);
+        return getSumUtil(0, n - 1, query_start, query_end, 0);
     }
 
-    void constructSTUtil(int arr[], int segment_start, int segment_end, int segment_index)
+    void construct(int arr[], int segment_start, int segment_end, int segment_index)
     {
         if (segment_start > segment_end)
             return;
@@ -101,32 +101,17 @@ public class Segment_tree
         }
 
         int mid = (segment_start + segment_end) / 2;
-        constructSTUtil(arr, segment_start, mid, segment_index * 2 + 1);
-        constructSTUtil(arr, mid + 1, segment_end, segment_index * 2 + 2);
+        construct(arr, segment_start, mid, segment_index * 2 + 1);
+        construct(arr, mid + 1, segment_end, segment_index * 2 + 2);
 
         tree[segment_index] = tree[segment_index * 2 + 1] + tree[segment_index * 2 + 2];
     }
 
-    void constructST(int arr[], int n)
+    void construct_tree(int arr[], int n)
     {
-        constructSTUtil(arr, 0, n - 1, 0);
+        construct(arr, 0, n - 1, 0);
     }
 
 
-    public static void main(String args[])
-    {
-        int arr[] = {1, 3, 5, 7, 9, 11};
-        int n = arr.length;
-        Segment_tree tree = new Segment_tree();
 
-        tree.constructST(arr, n);
-
-        System.out.println("Sum of values in given range = " +
-                tree.getSum(n, 1, 3));
-
-        tree.update_start(n, 1, 5, 10);
-
-        System.out.println("Updated sum of values in given range = " +
-                tree.getSum(n, 1, 3));
-    }
 }
