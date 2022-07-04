@@ -11,7 +11,7 @@ public class Segment_tree
     }
 
     private void update(int segment_index, int segment_start, int segment_end, int update_start,
-                         int update_end, int diff)
+                        int update_end, int diff)
     {
         if (lazy[segment_index] != 0)
         {
@@ -96,7 +96,8 @@ public class Segment_tree
 
         if (segment_start == segment_end)
         {
-            tree[segment_index] = arr[segment_start];
+            int a = arr[segment_start];
+            tree[segment_index] = a;
             return;
         }
 
