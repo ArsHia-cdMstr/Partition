@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Scanner;
 
 public class Partition {
+    final static int reminder_from = 1000000007 ;
     public static void main(String[] args) throws FileNotFoundException {
         start();
     }
@@ -31,19 +32,19 @@ public class Partition {
 
         // make a tree and initialize it
 
-        Segment_tree segment_tree = new Segment_tree(main_set_ending);
+        Segment_tree segment_tree = new Segment_tree();
 
-        int[] temp = new int[main_set_ending+12];
+        int[] temp = new int[main_set_ending+2];
 
         segment_tree.construct_tree( temp , main_set_ending  );
 
         // update sets and use algorithm
 
-        segment_tree.update_start(main_set_ending + 1 ,main_set_ending ,main_set_ending ,1 );
+        segment_tree.update_start(main_set_ending ,main_set_ending ,main_set_ending ,1 );
 
         for (int i = 0; i < sets_num; i++) {
             int amount = segment_tree.getSum(main_set_ending , arr[i][0] , arr[i][1]);
-            segment_tree.update_start(main_set_ending ,arr[i][0] , arr[i][0] , amount);
+            segment_tree.update_start(main_set_ending ,arr[i][0] , arr[i][0] , amount % reminder_from );
         }
 
         System.out.println( segment_tree.getSum( main_set_ending , 0, 0 ));
